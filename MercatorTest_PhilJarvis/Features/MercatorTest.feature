@@ -4,8 +4,9 @@ Check User can access the website via URL, then select the Dresses menu, then th
 @test
 Scenario: [TEST001] - Mercator Test Task
 	Given The Site is available
-	Then I click on the Dresses Menu item
-	Then I select the highest price item
-	Then I select the highest price item to the cart
+	#Then I click on the Dresses Menu item
+	#Then I select the highest price item
+	#Then I switch to the popup Iframe
+	#Then I add the highest price item to the cart
 
 

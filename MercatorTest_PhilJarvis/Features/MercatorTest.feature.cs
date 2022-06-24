@@ -96,15 +96,6 @@ this.ScenarioInitialize(scenarioInfo);
 #line 6
  testRunner.Given("The Site is available", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 7
- testRunner.Then("I click on the Dresses Menu item", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 8
- testRunner.Then("I select the highest price item", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 9
- testRunner.Then("I select the highest price item to the cart", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
             }
             this.ScenarioCleanup();
         }

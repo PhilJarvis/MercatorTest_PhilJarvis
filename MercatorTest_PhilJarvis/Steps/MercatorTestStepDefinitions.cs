@@ -19,25 +19,36 @@ namespace MercatorTest_PhilJarvis.Steps
         [Given(@"The Site is available")]
         public void TheSiteIsAvailable()
         {
-           var homepage = entrance.Login(authDetail.SiteAddress);
+           entrance.Login(authDetail.SiteAddress);
+           //Save("homepage", homepage);
         }
 
         [Then(@"I click on the Dresses Menu item")]
         public void ThenIClickOnTheDressesMenuItem()
         {
-            var homepage = entrance.OpenDressesMenu();
+            entrance.OpenDressesMenu();
+            //Save("homepage", homepage);
         }
 
         [Then(@"I select the highest price item")]
         public void ThenISelectTheHighestPriceItem()
         {
-            var homepage = entrance.SelectTheHighestPriceItem();
+            entrance.SelectTheHighestPriceItem();
+            //Save("homepage", homepage);
         }
 
-        [Then(@"I select the highest price item to the cart")]
-        public void ThenISelectTheHighestPriceItemToTheCart()
+        [Then(@"I switch to the popup Iframe")]
+        public void ThenISwitchToThePopupIframe()
         {
-           var homepage = entrance.SendToShoppingCart();
+            entrance.SwitchFrame();
+           //ave("homepage", homepage);
+        }
+
+        [Then(@"I add the highest price item to the cart")]
+        public void ThenIAddTheHighestPriceItemToTheCart()
+        {
+            entrance.AddToShoppingCart();
+            //Save("homepage", homepage);
         }
     }
 }

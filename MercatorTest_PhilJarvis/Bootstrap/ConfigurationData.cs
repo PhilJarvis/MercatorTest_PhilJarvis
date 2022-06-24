@@ -1,6 +1,9 @@
 ﻿using NUnit.Framework;
+using System;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Configuration;
+using System.Linq;
 
 namespace MercatorTest_PhilJarvis.Bootstrap
 {
@@ -26,6 +29,9 @@ namespace MercatorTest_PhilJarvis.Bootstrap
         public sealed class LocalConfig
         {
             private static readonly LocalConfig instance = new LocalConfig();
+            private static int keysIdea;
+            private static object? appSettingsIdea;
+
             private LocalConfig()
             {
                 var webUrl = GetValueOrDefault<string>("webUrl");
@@ -40,10 +46,34 @@ namespace MercatorTest_PhilJarvis.Bootstrap
             public string Browser { get; private set; }
             public string DownloadsDirectory { get; private set; }
             public string ExtentReportPath { get; private set; }
+            public long Timeout { get; private set; }
+
+            static void DisplayAppSettings()
+            {
+
+                // Get the AppSettings collection.
+                NameValueCollection appSettings =
+                   ConfigurationManager.AppSettings;
+
+                string[] keys = appSettings.AllKeys;
+
+                Console.WriteLine();
+                Console.WriteLine("Application appSettings:");
+
+                // Loop to get key/value pairs.
+                for (int i = 0; i < appSettings.Count; i++)
+
+                    Console.WriteLine("#{0} Name: {1} Value: {2}",
+                      i, keysIdea, appSettingsIdea);
+
+            }
 
             private T GetValueOrDefault<T>(string key, bool shouldCheckAppConfigOnly = false, T defaultValue = default(T))
             {
-                string setting = null;
+                string setting;
+                //ConfigurationManager.RefreshSection("appSettings");
+                DisplayAppSettings();
+
                 if (!shouldCheckAppConfigOnly && TestContext.Parameters.Exists(key))
                 {
                     setting = TestContext.Parameters[key];
@@ -60,7 +90,6 @@ namespace MercatorTest_PhilJarvis.Bootstrap
                 var conv = TypeDescriptor.GetConverter(typeof(T));
                 return (T)conv.ConvertFrom(setting);
             }
-
         }
     }
 

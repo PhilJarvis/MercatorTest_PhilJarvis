@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using System;
 using System.Diagnostics;
 
 namespace MercatorTest_PhilJarvis.Drivers

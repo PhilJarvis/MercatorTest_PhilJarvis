@@ -8,6 +8,9 @@ using TechTalk.SpecFlow;
 using AventStack.ExtentReports.Gherkin.Model;
 using MercatorTest_PhilJarvis.Web.Shared.Utils;
 using MercatorTest_PhilJarvis.Web.Shared;
+using NLog;
+using NLog.Config;
+using System;
 
 namespace MercatorTest_PhilJarvis
 {
@@ -36,11 +39,10 @@ namespace MercatorTest_PhilJarvis
             container.RegisterInstanceAs(config);
 
             objectContainer = container;
-
         }
 
         [BeforeTestRun]
-        public static void BeforeTestRun(FeatureContext featureContext)
+        public static void BeforeTestRun()
         {
             driverManager.KillAllChromeDriver();
             if (config == null)

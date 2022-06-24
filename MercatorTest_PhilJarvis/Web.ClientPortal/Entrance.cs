@@ -1,7 +1,10 @@
 ﻿using MercatorTest_PhilJarvis.Web.ClientPortal.Global;
 using MercatorTest_PhilJarvis.Web.Shared;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.PageObjects;
+using System;
+using System.Threading;
 
 namespace MercatorTest_PhilJarvis.Web.ClientPortal
 {
@@ -12,36 +15,60 @@ namespace MercatorTest_PhilJarvis.Web.ClientPortal
         {
         }
 
+        [FindsBy(How = How.CssSelector, Using = "#block_top_menu > ul > li:nth-child(2) > a")]
+        protected IWebElement DressesMenu { get; set; }
+
+        [FindsBy(How = How.CssSelector, Using = "#center_column > ul > li:nth-child(2) > div > div.left-block > div > a.product_img_link > img")]
+        protected IWebElement HighestPriceItem { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "/html/body/div[2]/div/div/div/div/iframe")]
+        protected IWebElement PopUpFrame { get; set; }
+
+        [FindsBy(How = How.Name, Using ="Submit")]
+        protected IWebElement AddToCart {get; set; }
+
         public Header Login(Uri siteAddress)
         {
             var header = new Header(Driver);
             Navigate(siteAddress);
 
+            var wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(60));
+
+            if (IsReady())
+            {
+                Thread.Sleep(5000);
+                OpenDressesMenu();
+                Thread.Sleep(5000);
+                SelectTheHighestPriceItem();
+                Thread.Sleep(5000);
+                SwitchFrame();
+                Thread.Sleep(5000);
+                AddToShoppingCart();
+                Thread.Sleep(5000);
+            }
+
             return header;
         }
 
-        [FindsBy(How = How.CssSelector, Using = "#stores_block_left")]
-        protected IWebElement DressesMenu { get; set; }
-
-        [FindsBy(How = How.CssSelector, Using = "#center_column > ul > li:nth-child(2) > div > div.right-block > div.content_price > span")]
-        protected IWebElement HighestPriceItem { get; set; }
-
-        [FindsBy(How = How.Id, Using ="add_to_cart")]
-        protected IWebElement SendToCart {get; set; }
-
-        public Header OpenDressesMenu()
+        public void OpenDressesMenu()
         {
-            return Click(DressesMenu, new Header(Driver), "Clicking on the dresses menu");
+            Click(DressesMenu, "Clicking on the dresses menu");
         }
 
-        public Header SelectTheHighestPriceItem()
+        public void SelectTheHighestPriceItem()
         {
-            return Click(HighestPriceItem, new Header(Driver), "Clicking on the Highest Price Dress");
+            Click(HighestPriceItem, "Clicking on the Highest Price Dress");
         }
 
-        public Header SendToShoppingCart()
+        public void SwitchFrame()
         {
-            return Click(SendToCart, new Header(Driver), "Clicking to send to cart");
+            Driver.SwitchTo().Frame(PopUpFrame);
+        }
+
+        public void AddToShoppingCart()
+        {
+
+            Click(AddToCart, "Clicking to add to cart");
         }
     }
 }
