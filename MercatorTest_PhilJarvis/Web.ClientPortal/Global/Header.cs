@@ -10,6 +10,22 @@ namespace MercatorTest_PhilJarvis.Web.ClientPortal.Global
             : base(driver, false)
         {
         }
-   
+
+        // Grab all the Header page Elements etc
+        [FindsBy(How = How.ClassName, Using = "Some Class for Logo etc")]
+        protected IWebElement Logo { get; set; }
+
+        [FindsBy(How = How.ClassName, Using = "Some Class for Help Dropdown etc")]
+        protected IWebElement HelpDropdownDiv { get; set; }
+
+        public override bool IsReady()
+        {
+            return IsReady(Logo);
+        }
+
+        public void WaitForHelpDropdown()
+        {
+            WaitForElement(HelpDropdownDiv, true, 10);
+        }
     }
 }

@@ -37,19 +37,6 @@ namespace MercatorTest_PhilJarvis.Web.Shared
             }
         }
 
-        protected virtual bool IsModalActive(string customClassName)
-        {
-            try
-            {
-                var isOpen = Driver.FindElement(By.ClassName(customClassName != null ? customClassName : "modal-open")) != null;
-                return isOpen;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-
         private IWebElement FindModal()
         {
             try
@@ -148,6 +135,38 @@ namespace MercatorTest_PhilJarvis.Web.Shared
             Driver.Navigate().GoToUrl(address);
         }
 
+        //protected T Navigate<T>(Uri address, T expectedOutcome, string errorMessage, string customWaitScript = "") where T : class, IWaitable
+        //{
+        //    try
+        //    {
+        //        Logger.Debug("Url {0} Driver Url: {1}", address, Driver.Url);
+        //        Driver.Navigate().GoToUrl(address);
+
+        //        if (!string.IsNullOrEmpty(customWaitScript))
+        //        {
+        //            IWaitableStrategy strategy = WaitableScriptFactory.Get(Driver, Logger, GetTimeout(), WaitableScriptType.Custom, customWaitScript);
+        //            if (null != strategy)
+        //            {
+        //                strategy.Wait();
+        //            }
+        //        }
+
+        //        Logger.Debug("Url complete {0}", address);
+
+        //        if (expectedOutcome != null)
+        //        {
+        //            new WaitablePageStrategy<T>(Driver, Logger, expectedOutcome, GetTimeout().wait();
+        //        }
+
+        //        return expectedOutcome;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Logger.Error("Failed to navigate to: {0} {1}", address, ex.Message);
+        //        throw;
+        //    }
+        //}
+
         protected void Click(IWebElement element, string errorMessage)
         {
             if(element == null)
@@ -233,6 +252,28 @@ namespace MercatorTest_PhilJarvis.Web.Shared
             builder.MoveToElement(element).Build().Perform();
         }
 
+        protected virtual bool IsModalActive(string customClassName = null)
+        {
+            try
+            {
+                var isOpen = Driver.FindElement(By.ClassName(customClassName != null ? customClassName : "modal-open")) != null;
+                Logger.Debug("modal showing {0}", isOpen);
+                return isOpen;
+            }
+            catch (Exception ex)
+            {
+
+                Logger.Debug("modal not showing {0}", ex.Message);
+                return false;
+            }
+        }
+
+        public bool WaitForElement(IWebElement element, bool visible, int timeInSecs)
+        {
+            var wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(timeInSecs));
+            return wait.Until(d => visible && IsElementVisible(element) || !visible && !IsElementVisible(element));
+        }
+
         //protected TimeSpan GetTimeout()
         //{
         //    if (((RemoteWebDriver)GetRawDriver()).IsActionExecutor)
@@ -242,6 +283,11 @@ namespace MercatorTest_PhilJarvis.Web.Shared
 
         //    return TimeSpan.FromSeconds(ConfigurationData.LocalConfig.Instance.Timeout);
         //}
+
+        protected TimeSpan GetTimeout()
+        {
+            return TimeSpan.FromSeconds(30);
+        }
 
         [Serializable]
         public class NullElementException : Exception
